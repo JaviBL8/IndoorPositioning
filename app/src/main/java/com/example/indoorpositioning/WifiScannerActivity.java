@@ -9,20 +9,19 @@ import android.content.IntentFilter;
 import android.net.wifi.ScanResult;
 import android.os.Bundle;
 import android.net.wifi.WifiManager;
-import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class WifiScannerActivity extends AppCompatActivity {
 
     private WifiManager wifiManager;
     private ListView listView;
-    private Button buttonScan;
     private List<ScanResult> results;
     private ArrayList<String> availableNetworks = new ArrayList<>();
     private ArrayAdapter adapter;
@@ -31,13 +30,6 @@ public class WifiScannerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        buttonScan = findViewById(R.id.scanBtn);
-        buttonScan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                scanWifi();
-            }
-        });
 
         listView = findViewById(R.id.wifiList);
         wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
@@ -49,11 +41,20 @@ public class WifiScannerActivity extends AppCompatActivity {
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, availableNetworks);
         listView.setAdapter(adapter);
+
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                scanWifi();
+            }
+        },0,10000);
     }
+
     private void scanWifi() {
         availableNetworks.clear();
         registerReceiver(wifiReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-        Toast.makeText(this, "Scanning Wifi", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Scanning Wifi", Toast.LENGTH_SHORT).show();
         wifiManager.startScan();
     }
 
@@ -74,4 +75,6 @@ public class WifiScannerActivity extends AppCompatActivity {
         double exp = (27.55 - (20 * Math.log10(freqInMHz)) + Math.abs(levelInDb)) / 20.0;
         return Math.pow(10.0, exp);
     }
+
+
 }
