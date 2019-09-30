@@ -42,6 +42,7 @@ public class WifiScannerActivity extends AppCompatActivity {
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, availableNetworks);
         listView.setAdapter(adapter);
 
+        //Escanear wifi cada 10 segundos
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -49,12 +50,13 @@ public class WifiScannerActivity extends AppCompatActivity {
                 scanWifi();
             }
         },0,10000);
+
+        ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this,"db_AP",null,1);
     }
 
     private void scanWifi() {
         availableNetworks.clear();
         registerReceiver(wifiReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-        //Toast.makeText(this, "Scanning Wifi", Toast.LENGTH_SHORT).show();
         wifiManager.startScan();
     }
 
