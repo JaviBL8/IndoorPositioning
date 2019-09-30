@@ -54,6 +54,7 @@ public class WifiScannerActivity extends AppCompatActivity {
     private void scanWifi() {
         availableNetworks.clear();
         registerReceiver(wifiReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+        //Toast.makeText(this, "Scanning Wifi", Toast.LENGTH_SHORT).show();
         wifiManager.startScan();
     }
 
