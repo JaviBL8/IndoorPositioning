@@ -9,7 +9,9 @@ import android.content.IntentFilter;
 import android.net.wifi.ScanResult;
 import android.os.Bundle;
 import android.net.wifi.WifiManager;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -25,11 +27,19 @@ public class WifiScannerActivity extends AppCompatActivity {
     private List<ScanResult> results;
     private ArrayList<String> availableNetworks = new ArrayList<>();
     private ArrayAdapter adapter;
+    private Button scanBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        scanBtn = findViewById(R.id.scanBtn);
+        scanBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scanWifi();
+            }
+        });
 
         listView = findViewById(R.id.wifiList);
         wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
@@ -41,7 +51,7 @@ public class WifiScannerActivity extends AppCompatActivity {
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, availableNetworks);
         listView.setAdapter(adapter);
-
+/*
         //Escanear wifi cada 10 segundos
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -50,7 +60,7 @@ public class WifiScannerActivity extends AppCompatActivity {
                 scanWifi();
             }
         },0,10000);
-
+*/
         ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this,"db_AP",null,1);
     }
 
