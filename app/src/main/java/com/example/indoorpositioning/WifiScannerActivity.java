@@ -28,7 +28,6 @@ public class WifiScannerActivity extends AppCompatActivity {
     private ArrayList<String> availableNetworks = new ArrayList<String>();
     private ArrayAdapter adapter;
     private Button scanBtn;
-    private Button registerBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,14 +40,6 @@ public class WifiScannerActivity extends AppCompatActivity {
                 scanWifi();
             }
         });
-        registerBtn = findViewById(R.id.addBtn);
-        registerBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addPoint(v);
-            }
-        });
-
 
         listView = findViewById(R.id.wifiList);
         wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
@@ -70,7 +61,6 @@ public class WifiScannerActivity extends AppCompatActivity {
             }
         },0,10000);
 */
-        ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this,"db_AP",null,1);
     }
 
     private void scanWifi() {
@@ -97,12 +87,5 @@ public class WifiScannerActivity extends AppCompatActivity {
         return Math.pow(10.0, exp);
     }
 
-    private void addPoint(View view){
-        Intent apRegister = new Intent(this, APRegister.class);
-        Bundle b = new Bundle();
-        b.putStringArrayList("availableNetworks",availableNetworks);
-        apRegister.putExtras(b);
-        startActivity(apRegister);
-    }
 
 }

@@ -16,7 +16,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".APRegister"></activity>
         <activity android:name=".WifiScannerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
