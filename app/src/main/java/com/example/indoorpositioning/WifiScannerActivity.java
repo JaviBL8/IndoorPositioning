@@ -76,7 +76,8 @@ public class WifiScannerActivity extends AppCompatActivity {
             unregisterReceiver(this);
 
             for (ScanResult scanResult : results){
-                availableNetworks.add(scanResult.SSID + " - " + scanResult.BSSID + " - " + (int)calculateDistance(scanResult.level,scanResult.frequency) + " m");
+                String bssid = scanResult.BSSID.replace(":","");
+                availableNetworks.add(scanResult.SSID + " - " + bssid + " - " + (int)calculateDistance(scanResult.level,scanResult.frequency) + " m");
                 adapter.notifyDataSetChanged();
             }
         }
