@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,18 +10,16 @@
     <ListView
         android:id="@+id/wifiList"
         android:layout_width="match_parent"
-        android:layout_height="276dp"
-        android:layout_weight="0.97">
-
-
-    </ListView>
+        android:layout_height="312dp"
+        android:layout_weight="0.97"/>
 
     <Button
         android:id="@+id/scanBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom"
+        android:layout_margin="15dp"
         android:background="@android:color/holo_red_light"
-        android:text="Scan Wifi" />
-
+        android:text="Scan Wifi"
+        />
 </LinearLayout>
