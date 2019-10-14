@@ -44,6 +44,7 @@ public class WifiScannerActivity extends AppCompatActivity {
     private ListView listView;
     private List<ScanResult> results;
     private ArrayList<String> availableNetworks = new ArrayList<String>();
+    private Boolean added=false;
     private ArrayAdapter adapter;
     private Button scanBtn;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -99,19 +100,18 @@ public class WifiScannerActivity extends AppCompatActivity {
 
             for (ScanResult scanResult : results){
                 String bssid = scanResult.BSSID.replace(":","");
-                addAPs(bssid);
-                //availableNetworks.add(scanResult.SSID + " - " + bssid + " - " + (int)calculateDistance(scanResult.level,scanResult.frequency) + " m");
-                adapter.notifyDataSetChanged();
+                double distance = (int)calculateDistance(scanResult.level,scanResult.frequency);
+                addAPs(scanResult.SSID,bssid,distance);
             }
         }
     };
 
-    public double calculateDistance(double levelInDb, double freqInMHz)    {
+    private double calculateDistance(double levelInDb, double freqInMHz)    {
         double exp = (27.55 - (20 * Math.log10(freqInMHz)) + Math.abs(levelInDb)) / 20.0;
         return Math.pow(10.0, exp);
     }
 
-    private void addAPs(final String bssid){
+    private void addAPs(final String ssid,final String bssid, final double distance){
         CollectionReference apRef = db.collection("lugares");
 
         db.collection("lugares")
@@ -122,13 +122,17 @@ public class WifiScannerActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                String valor = (String) document.getData().get("lugar");
+                                //Punto reconocido
+                                String valor = (String) document.getData().get("lugar") + " - " + distance + "m";
                                 availableNetworks.add(valor);
                                 adapter.notifyDataSetChanged();
-                                Log.d(TAG, document.getId() + " => " + document.getData());
+                            }
+                            if (task.getResult().isEmpty()){
+                                availableNetworks.add(ssid + " - " + bssid + " - " + " - " + distance + "m");
+                                adapter.notifyDataSetChanged();
                             }
                         } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
+                            Log.d(TAG,"Error getting the document");
                         }
                     }
                 });
